@@ -1,0 +1,28 @@
+﻿@model LoginViewModel
+<div class="container-fluid">
+    <form asp-action="Login" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" />
+            <span class="text-danger" asp-validation-for="Email"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Password"></label>
+            <input asp-for="Password" class="form-control" />
+            <span class="text-danger" asp-validation-for="Password"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Remember">
+                <input asp-for="Remember" />@Html.DisplayNameFor(m => m.Remember)
+            </label>
+            <span class="text-danger" asp-validation-for="Remember"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Login" class="btn btn-outline-primary" />
+        </div>
+    </form>
+</div>
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

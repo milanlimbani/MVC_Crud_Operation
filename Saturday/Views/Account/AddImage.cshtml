@@ -1,0 +1,26 @@
+﻿@model AddImageViewModel
+<div class="container">
+    <form asp-action="AddImage" asp-controller="Account" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="ImageTitle"></label>
+            <input asp-for="ImageTitle" class="form-control" />
+            <span asp-validation-for="ImageTitle" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ProductImage"></label>
+            <input type="file" name="ProductImage" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="ImageDescription"></label>
+            <input asp-for="ImageDescription" class="form-control" />
+            <span asp-validation-for="ImageDescription" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Add Image" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

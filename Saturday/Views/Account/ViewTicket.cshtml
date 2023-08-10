@@ -1,0 +1,51 @@
+﻿@model TicketReservation
+@if (TempData.ContainsKey("RecordDeleted") && (bool)TempData["RecordDeleted"])
+{
+    <script>
+        alert("Record deleted successfully.");
+    </script>
+}
+<!-- Existing code -->
+<form asp-action="ViewTicket" method="post">
+    <input type="number" name="id" placeholder="Search by Id" />
+    <input type="submit" value="Search" />
+</form>
+@if (ViewBag.Reservations != null)
+{
+
+    <h4>Confirmed Reservations</h4>
+    <div class="reservation-list">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Reservation ID</th>
+                    <th>Email</th>
+                    <th>Bus Number</th>
+                    <th>Date/Time</th>
+                    <th>Selected Seats</th>
+                    <th>Cancel</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var reservation in ViewBag.Reservations)
+                {
+
+                    <tr>
+                        <td>@reservation.Id</td>
+                        <td>@reservation.Email</td>
+                        <td>@reservation.BusNumber</td>
+                        <td>@reservation.DateTime</td>
+                        <td>@reservation.selectedseat</td>
+                        <td>
+                            <form asp-action="DeleteTicket" asp-controller="Account" method="post" asp-route-id="@reservation.Id">
+                                <input type="submit" value="Cancel" class="btn btn-outline-danger" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<!-- Existing code -->

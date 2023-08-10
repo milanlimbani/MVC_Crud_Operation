@@ -1,0 +1,129 @@
+﻿@model TicketReservation
+<div class="container-fluid">
+    @if (@ViewBag.BusDetailsList != null)
+    {
+        <form asp-action="BusDetails" method="post">
+            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+            <div class="form-group">
+                <label asp-for="BusNumber"></label>
+                <select id="dropdownbusnumber" asp-for="BusNumber" asp-items="@(new SelectList(ViewBag.BusDetailsList, "BusNumber", "BusName"))" class="form-control" required>
+                    <option value="" disabled selected>Select BusNumber</option>
+                </select>
+                <span class="text-danger" asp-validation-for="BusNumber"></span>
+            </div>
+            <div class="form-group">
+                <label>Source:</label>
+                <input type="text" id="sourceInput" class="form-control" readonly />
+            </div>
+
+            <div class="form-group">
+                <label>Destination:</label>
+                <input type="text" id="destinationInput" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="DateTime"></label>
+                <input asp-for="DateTime" id="DateTime" class="form-control" />
+                <span class="text-danger" asp-validation-for="DateTime"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeDetails"></label>
+                <input asp-for="TimeDetails" class="form-control" />
+                <span class="text-danger" asp-validation-for="TimeDetails"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-outline-primary" value="Check Avability" />
+            </div>
+        </form>
+    }
+    else
+    {
+        <h4 class="text-danger">Data Not Found</h4>
+    }
+</div>
+<form asp-action="ConfirmReservation" method="post" onsubmit="return validateForm()">
+    <input type="hidden" asp-for="BusNumber" />
+    <input type="hidden" id="JourneyDate" name="JourneyDate" asp-for="JourneyDate" />
+    @if (Model.SeatAvability != null)
+    {
+        <h4>Seat Availability</h4>
+        <div class="seat-layout" style="max-width: 780%; overflow-x: auto;">
+            <table class="table">
+                <tr>
+                    @for (int j = 1; j < Model.SeatAvability.Count; j++)
+                    {
+                        <td>
+                            <label>
+                                <input type="checkbox" id="SelectedSeat" name="SelectedSeat" value="@j" @(Model.SelectedSeat != null && Model.SelectedSeat.Contains(j) ? "checked" : "")>
+
+                                @j
+                                <img src="@(Model.SeatAvability[j] ? "/Image/available.png" : "/Image/occupied.jpg")" style="width:50px;height:50px" />
+                            </label>
+                        </td>
+                    }
+                </tr>
+            </table>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email">Email:</label>
+            <input asp-for="Email" class="form-control" disabled />
+            <span class="text-danger" asp-validation-for="Email"></span>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Confirm Reservation" class="btn btn-outline-primary" />
+        </div>
+    }
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function validateForm() {
+        var checkboxes = document.getElementsByName('SelectedSeat');
+        var isChecked = false;
+
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                isChecked = true;
+                break;
+            }
+        }
+
+        if (!isChecked) {
+            alert('Please select at least one seat.');
+            return false;
+        }
+
+        return true;
+    }
+
+    $(function () {
+        $('form').submit(function (e) {
+            var selectedDate = new Date($('#DateTime').val());
+            var today = new Date();
+            if (selectedDate < today) {
+                e.preventDefault();
+                alert('Please select a future date.');
+            } else {
+                $('#JourneyDate').val($('#DateTime').val());
+            }
+        });
+
+    var busList = @Html.Raw(Json.Serialize(ViewBag.BusDetailsList));
+
+        $('#dropdownbusnumber').change(function () {
+            var selectedBusNumber = $(this).val();
+            var selectedBus = busList.find(bus => bus.busNumber == selectedBusNumber);
+            console.log(selectedBus);
+            if (selectedBus) {
+                $('#sourceInput').val(selectedBus.source);
+                $('#destinationInput').val(selectedBus.destination);
+            } else {
+                $('#sourceInput').val('');
+                $('#destinationInput').val('');
+            }
+        });
+
+        $('#dropdownbusnumber').trigger('change');
+    });
+</script>

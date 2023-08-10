@@ -1,0 +1,55 @@
+﻿@model IEnumerable<AddImages>
+<div class="container">
+    <table class="table table-stripped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Image Title</th>
+                <th>Image Description</th>
+                <th>Image</th>
+                <th>CreationDate</th>
+                <th>UpdatetionDate</th>
+                <th>Isclose</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.ImageTitle</td>
+                    <td>@item.ImageDescription</td>
+                    <td>
+                        <img src="/Image/@item.ProductImage" style="width:50px;height:50px" />
+                    </td>
+                    <td>
+                        @item.CreationDate
+                    </td>
+                    <td>
+                        @item.UpdatetionDate
+                    </td>
+                    <td>
+                        @if (bool.TryParse(item.IsClose.ToString(), out bool IsClose) && IsClose)
+                        {
+                            <span class="text-danger">Close</span>
+                        }
+                        else
+                        {
+                            <span class="text-warning">Running</span>
+
+                        }
+                    </td>
+                    <td>
+                        <form asp-action="EditImage" asp-controller="Account" method="get" asp-route-id="@item.Id">
+                            <input type="hidden" name="ImageTitle" value="@item.ImageTitle" />
+                            <input type="hidden" name="ImageDescription" value="@item.ImageDescription" />
+                            <input type="hidden" name="IsClose" value="@item.IsClose.ToString()" />
+                            <input type="submit" value="Edit" class="btn btn-outline-info" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

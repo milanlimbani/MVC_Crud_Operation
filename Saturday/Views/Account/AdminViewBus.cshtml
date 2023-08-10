@@ -1,0 +1,79 @@
+﻿@model AddBus
+@{
+    int sr = 0;
+}
+
+<div class="container-fluid">
+    @if (ViewBag.viewBuses != null)
+    {
+        <table class="table table-striped table-active w-100">
+            <thead>
+                <tr>
+                    <th>Sr.</th>
+                    <th>BusName</th>
+                    <th>BusNumber</th>
+                    <th>Source</th>
+                    <th>Departuare Date</th>
+                    <th>Departuare Time</th>
+                    <th>Destination</th>
+                    <th>Arriaval Date</th>
+                    <th>Arriaval Time</th>
+                    <th>MaxCapisity</th>
+                    <th>CreationDate</th>
+                    <th>UpdationDate</th>
+                    <th>Status</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.viewBuses)
+                {
+                    sr++;
+                    <tr>
+                        <td>@sr</td>
+                        <td>@item.BusName</td>
+                        <td>@item.BusNumber</td>
+                        <td>@item.Source</td>
+                        <td>@item.Departuare</td>
+                        <td>@item.DepartuareTime</td>
+                        <td>@item.Destination</td>
+                        <td>@item.Arriaval</td>
+                        <td>@item.ArrivalTime</td>
+                        <td>@item.MaxCapisity</td>
+                        <td>@item.CreationDate</td>
+                        <td>@item.UpdationDate</td>
+                        <td>
+                            @if (bool.TryParse(item.IsClose.ToString(), out bool isClose) && isClose)
+                            {
+                                <span class="text-danger">Close</span>
+                            }
+                            else
+                            {
+                                <span class="text-warning">Running</span>
+                            }
+                        </td>
+                        <td>
+                            <form asp-action="EditBus" asp-controller="Account" method="get" asp-route-id="@item.Id">
+                                <input type="hidden" name="BusName" value="@item.BusName" />
+                                <input type="hidden" name="BusNumber" value="@item.BusNumber" />
+                                <input type="hidden" name="Source" value="@item.Source" />
+                                <input type="hidden" name="Departuare" value="@item.Departuare.ToString("yyyy-MM-dd")" />
+                                <input type="hidden" name="DepartuareTime" value="@item.DepartuareTime.ToString(@"hh\:mm")" />
+                                <input type="hidden" name="Destination" value="@item.Destination" />
+                                <input type="hidden" name="Arriaval" value="@item.Arriaval.ToString("yyyy-MM-dd")" />
+                                <input type="hidden" name="ArrivalTime" value="@item.ArrivalTime.ToString(@"hh\:mm")" />
+                                <input type="hidden" name="MaxCapisity" value="@item.MaxCapisity" />
+                                <input type="hidden" name="IsClose" value="@item.IsClose.ToString()" />
+                                <input type="submit" value="Edit" class="btn btn-outline-info" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h4 class="text-danger">Data not found</h4>
+    }
+</div>

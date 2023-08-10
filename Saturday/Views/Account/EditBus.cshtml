@@ -1,0 +1,64 @@
+﻿@model AddBus
+<div class="container-fluid">
+    <form asp-action="EditBus" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="BusNumber"></label>
+            <input asp-for="BusNumber" class="form-control" />
+            <span class="text-danger" asp-validation-for="BusNumber"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="BusName"></label>
+            <input asp-for="BusName" class="form-control" />
+            <span class="text-danger" asp-validation-for="BusName"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Source"></label>
+            <input asp-for="Source" class="form-control" />
+            <span class="text-danger" asp-validation-for="Source"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Departuare"></label>
+            <input asp-for="Departuare" class="form-control" />
+            <span class="text-danger" asp-validation-for="Departuare"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="DepartuareTime"></label>
+            <input asp-for="DepartuareTime" class="form-control" />
+            <span class="text-danger" asp-validation-for="DepartuareTime"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Destination"></label>
+            <input asp-for="Destination" class="form-control" />
+            <span class="text-danger" asp-validation-for="Destination"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Arriaval"></label>
+            <input asp-for="Arriaval" class="form-control" />
+            <span class="text-danger" asp-validation-for="Arriaval"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ArrivalTime"></label>
+            <input asp-for="ArrivalTime" class="form-control" />
+            <span class="text-danger" asp-validation-for="ArrivalTime"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="MaxCapisity"></label>
+            <input asp-for="MaxCapisity" class="form-control" />
+            <span class="text-danger" asp-validation-for="MaxCapisity"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="IsClose">
+                <input asp-for="IsClose" /> @Html.DisplayNameFor(m => m.IsClose)
+            </label>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="AddBus" class="btn btn-outline-primary" />
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
